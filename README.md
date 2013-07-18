@@ -13,26 +13,28 @@ It can actually send email, but is obviously not ready for prime time.
 
 ## Basic usage
 
-  local tls_mailer = require "tls-mailer"
+```lua
+local tls_mailer = require "tls-mailer"
 
-  local mailer = tls_mailer.new{
-    server = "mail.example.com",
-    user = "smtp@example.com",
-    password = "V3ryS3cr37",
-  }
+local mailer = tls_mailer.new{
+  server = "mail.example.com",
+  user = "smtp@example.com",
+  password = "V3ryS3cr37",
+}
 
-  local r, e = mailer:send{
-    from = "sender@example.com",
-    to = "receiver@example.com",
-    subject = "my subject",
-    text = "my body text",
-    attach = {{ -- facultative
-      mimetype = "application/stuff",
-      fname = "myfile.xxx",
-      source = {string = "Hello!"},
-      -- or: source = {fname = "myfile.xxx"},
-    }},
-  }
+local r, e = mailer:send{
+  from = "sender@example.com",
+  to = "receiver@example.com",
+  subject = "my subject",
+  text = "my body text",
+  attach = {{ -- facultative
+    mimetype = "application/stuff",
+    fname = "myfile.xxx",
+    source = {string = "Hello!"},
+    -- or: source = {fname = "myfile.xxx"},
+  }},
+}
+```
 
 ## Copyright
 
