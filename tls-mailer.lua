@@ -129,10 +129,14 @@ local send = function(self,pp)
     rcpt = email_for(pp.to),
     source = source,
   }
-  local params = tls_params()
-  map_merge(params,self.params)
-  map_merge(msg,params)
-  msg.create = tls_tcp(params)
+  if self.use_tls then
+    local params = tls_params()
+    map_merge(params,self.params)
+    map_merge(msg,params)
+    msg.create = tls_tcp(params)
+  else
+    map_merge(msg, self.params)
+  end
   local r,e = smtp.send(msg)
   if r == 1 then
     return true,{email = msg.rcpt}
@@ -152,10 +156,12 @@ local new = function(pp)
     (type(pp.password) == "string")
   )
   local r = {
+    use_tls = (pp.use_tls == nil) or use_tls,
     params = {
       server = pp.server,
       user = pp.user,
       password = pp.password,
+      port = pp.port,
     },
   }
   return setmetatable(r,{__index = methods})
