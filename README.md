@@ -4,9 +4,19 @@
 
 Lua library to send email via SMTP servers with TLS.
 
-It can actually send email, but is obviously not ready for prime time.
+It is designed to work within OpenResty as well as outside of it.
 
 ## Dependencies
+
+
+Note: the rockspec will install the set of dependencies for use
+*without* OpenResty.
+
+### With OpenResty
+
+- [resty-smtp](https://github.com/duhoobo/lua-resty-smtp)
+
+### Without OpenResty
 
 - [LuaSocket](https://github.com/diegonehab/luasocket)
 - [LuaSec](https://github.com/brunoos/luasec)
@@ -39,4 +49,4 @@ local r, e = mailer:send{
 ## Copyright
 
 - Copyright (c) 2013 Moodstocks SAS
-- Copyright (c) 2014 Pierre Chapuis
+- Copyright (c) 2014-2016 Pierre Chapuis

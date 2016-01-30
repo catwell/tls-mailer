@@ -9,6 +9,7 @@ description = {
    summary = "Lua library to send email via SMTP servers with TLS",
    detailed = [[
       Lua library to send email via SMTP servers with TLS.
+      Designed to work within OpenResty as well as outside of it.
    ]],
    homepage = "https://github.com/catwell/tls-mailer",
    license = "MIT/X11",

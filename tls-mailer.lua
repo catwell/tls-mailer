@@ -1,22 +1,42 @@
-local socket = require "socket"
-local smtp = require "socket.smtp"
-local ltn12 = require "ltn12"
-local ssl = require "ssl"
+local smtp, mime, ltn12, ssl, tls_params
+local is_openresty = not not _G.ngx
+
+if is_openresty then
+
+  smtp = require "resty.smtp"
+  mime = require "resty.smtp.mime"
+  ltn12 = require "resty.smtp.ltn12"
+
+  tls_params = function()
+    return {
+      port = 465,
+      ssl = { enable = true, verify_cert = true },
+    }
+  end
+
+else
+
+  socket = require "socket"
+  smtp = require "socket.smtp"
+  ltn12 = require "ltn12"
+  ssl = require "ssl"
+
+  tls_params = function()
+    return {
+      mode = "client",
+      options = "all",
+      port = 465,
+      protocol = "tlsv1",
+      verify = "none",
+    }
+  end
+
+end
 
 local map_merge = function(m1, m2)
   for k,v in pairs(m2) do
     if m1[k] == nil then m1[k] = v end
   end
-end
-
-local tls_params = function()
-  return {
-    mode = "client",
-    options = "all",
-    port = 465,
-    protocol = "tlsv1",
-    verify = "none",
-  }
 end
 
 local tls_tcp = function(pp)
@@ -133,7 +153,9 @@ local send = function(self, pp)
     local params = tls_params()
     map_merge(params, self.params)
     map_merge(msg, params)
-    msg.create = tls_tcp(params)
+    if not is_openresty then
+      msg.create = tls_tcp(params)
+    end
   else
     map_merge(msg, self.params)
   end
