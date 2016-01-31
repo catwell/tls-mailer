@@ -7,10 +7,13 @@ if is_openresty then
   mime = require "resty.smtp.mime"
   ltn12 = require "resty.smtp.ltn12"
 
-  tls_params = function()
+  tls_params = function(check_cert)
     return {
       port = 465,
-      ssl = { enable = true, verify_cert = true },
+      ssl = {
+        enable = true,
+        verify_cert = (not not check_cert),
+      },
     }
   end
 
@@ -21,13 +24,13 @@ else
   ltn12 = require "ltn12"
   ssl = require "ssl"
 
-  tls_params = function()
+  tls_params = function(check_cert)
     return {
       mode = "client",
       options = "all",
       port = 465,
       protocol = "tlsv1",
-      verify = "none",
+      verify = check_cert and "peer" or "none",
     }
   end
 
@@ -150,7 +153,7 @@ local send = function(self, pp)
     source = source,
   }
   if self.use_tls then
-    local params = tls_params()
+    local params = tls_params(self.check_cert)
     map_merge(params, self.params)
     map_merge(msg, params)
     if not is_openresty then
@@ -178,7 +181,8 @@ local new = function(pp)
     (type(pp.password) == "string")
   )
   local r = {
-    use_tls = (pp.use_tls == nil) or use_tls,
+    use_tls = (pp.use_tls == nil) or pp.use_tls,
+    check_cert = (pp.check_cert == nil) or pp.check_cert,
     params = {
       server = pp.server,
       user = pp.user,
