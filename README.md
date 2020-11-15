@@ -26,25 +26,36 @@ Note: the rockspec will install the set of dependencies for use
 ```lua
 local tls_mailer = require "tls-mailer"
 
-local mailer = tls_mailer.new{
+local mailer = tls_mailer.new({
   server = "mail.example.com",
   user = "smtp@example.com",
   password = "V3ryS3cr37",
-}
+  cafile = 'cacert.pem',
+})
 
-local r, e = mailer:send{
+local r, e = mailer:send({
   from = "sender@example.com",
   to = "receiver@example.com",
   subject = "my subject",
   text = "my body text",
-  attach = {{ -- facultative
-    mimetype = "application/stuff",
-    fname = "myfile.xxx",
-    source = {string = "Hello!"},
-    -- or: source = {fname = "myfile.xxx"},
-  }},
-}
+  attach = { -- facultative array of attachments
+    {
+      mimetype = "application/stuff",
+      fname = "myfile.xxx",
+      source = {string = "Hello!"},
+      -- or: source = {fname = "myfile.xxx"},
+    },
+  },
+})
 ```
+
+To deal with certificates, you must pass a CA extract, which you can get for
+instance [here](https://curl.se/docs/caextract.html). With OpenResty this is
+not necessary and you use [lua_ssl_trusted_certificate] instead.
+You can also disable certificate verification (insecure!) with
+`check_cert = false`.
+
+[lua_ssl_trusted_certificate]: https://github.com/openresty/lua-nginx-module#lua_ssl_trusted_certificate
 
 ## Copyright
 

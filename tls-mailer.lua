@@ -189,6 +189,7 @@ local new = function(pp)
       user = pp.user,
       password = pp.password,
       port = pp.port,
+      cafile = pp.cafile,
     },
   }
   return setmetatable(r, {__index = methods})
