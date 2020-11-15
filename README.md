@@ -30,7 +30,7 @@ local mailer = tls_mailer.new({
   server = "mail.example.com",
   user = "smtp@example.com",
   password = "V3ryS3cr37",
-  cafile = 'cacert.pem',
+  cafile = "cacert.pem",
 })
 
 local r, e = mailer:send({
@@ -56,6 +56,11 @@ You can also disable certificate verification (insecure!) with
 `check_cert = false`.
 
 [lua_ssl_trusted_certificate]: https://github.com/openresty/lua-nginx-module#lua_ssl_trusted_certificate
+
+## Contributors
+
+- Pierre Chapuis ([@catwell](https://github.com/catwell))
+- Christopher Inacio ([@nacho319](https://github.com/nacho319))
 
 ## Copyright
 
