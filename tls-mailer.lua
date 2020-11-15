@@ -20,6 +20,7 @@ if is_openresty then
 else
 
   socket = require "socket"
+  mime = require "mime"
   smtp = require "socket.smtp"
   ltn12 = require "ltn12"
   ssl = require "ssl"
