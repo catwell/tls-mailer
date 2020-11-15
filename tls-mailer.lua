@@ -1,8 +1,9 @@
-local smtp, mime, ltn12, ssl, tls_params
+local socket, smtp, mime, ltn12, ssl, tls_params
 local is_openresty = not not _G.ngx
 
 if is_openresty then
 
+  socket = require "resty.socket"
   smtp = require "resty.smtp"
   mime = require "resty.smtp.mime"
   ltn12 = require "resty.smtp.ltn12"
@@ -45,13 +46,13 @@ end
 
 local tls_tcp = function(pp)
 
-  local cnx_idx = function(self, key)
+  local cnx_idx = function(_, key)
     return function(proxy, ...)
       return proxy.sock[key](proxy.sock, ...)
     end
   end
 
-  local cnx_connect = function(pp)
+  local cnx_connect = function()
     return function(self, host, port)
       socket.try(self.sock:connect(host, port))
       self.sock = socket.try(ssl.wrap(self.sock, pp))
@@ -63,7 +64,7 @@ local tls_tcp = function(pp)
   return function()
     local cnx = {
       sock = socket.try(socket.tcp()),
-      connect = cnx_connect(pp),
+      connect = cnx_connect(),
     }
     return setmetatable(cnx, {__index = cnx_idx})
   end
@@ -144,10 +145,10 @@ local send = function(self, pp)
       }
     end
   end
-  local source = smtp.message{
+  local source = smtp.message({
     headers = headers,
     body = body,
-  }
+  })
   local msg = {
     from = email_for(pp.from),
     rcpt = email_for(pp.to),
