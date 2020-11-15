@@ -49,4 +49,4 @@ local r, e = mailer:send{
 ## Copyright
 
 - Copyright (c) 2013 Moodstocks SAS
-- Copyright (c) 2014-2016 Pierre Chapuis
+- Copyright (c) 2014-2020 Pierre Chapuis
