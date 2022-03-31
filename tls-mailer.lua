@@ -31,7 +31,7 @@ else
       mode = "client",
       options = "all",
       port = 465,
-      protocol = "tlsv1",
+      protocol = "tlsv1_2",
       verify = check_cert and "peer" or "none",
     }
   end
