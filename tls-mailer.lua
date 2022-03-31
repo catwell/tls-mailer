@@ -26,12 +26,12 @@ else
   ltn12 = require "ltn12"
   ssl = require "ssl"
 
-  tls_params = function(check_cert)
+  tls_params = function(check_cert, tls_protocol)
     return {
       mode = "client",
       options = "all",
       port = 465,
-      protocol = "tlsv1_2",
+      protocol = tls_protocol or "tlsv1_2",
       verify = check_cert and "peer" or "none",
     }
   end
@@ -155,7 +155,7 @@ local send = function(self, pp)
     source = source,
   }
   if self.use_tls then
-    local params = tls_params(self.check_cert)
+    local params = tls_params(self.check_cert, self.tls_protocol)
     map_merge(params, self.params)
     map_merge(msg, params)
     if not is_openresty then
@@ -185,6 +185,7 @@ local new = function(pp)
   local r = {
     use_tls = (pp.use_tls == nil) or pp.use_tls,
     check_cert = (pp.check_cert == nil) or pp.check_cert,
+    tls_protocol = pp.tls_protocol,
     params = {
       server = pp.server,
       user = pp.user,
