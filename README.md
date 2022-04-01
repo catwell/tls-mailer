@@ -61,8 +61,9 @@ You can also disable certificate verification (insecure!) with
 
 - Pierre Chapuis ([@catwell](https://github.com/catwell))
 - Christopher Inacio ([@nacho319](https://github.com/nacho319))
+- Gran PC ([@GranPC](https://github.com/GranPC))
 
 ## Copyright
 
 - Copyright (c) 2013 Moodstocks SAS
-- Copyright (c) 2014-2020 Pierre Chapuis
+- Copyright (c) 2014-2022 Pierre Chapuis
