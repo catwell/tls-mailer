@@ -1,10 +1,11 @@
 rockspec_format = "3.0"
 
 package = "tls-mailer"
-version = "scm-1"
+version = "1.2-1"
 
 source = {
    url = "git://github.com/catwell/tls-mailer.git",
+   branch = "v1.2",
 }
 
 description = {

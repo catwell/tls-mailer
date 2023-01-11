@@ -1,3 +1,4 @@
+localua.sh
+.lua/
+
 cacert.pem
-localua/
-*.src.rock
